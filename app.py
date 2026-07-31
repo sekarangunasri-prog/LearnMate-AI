@@ -5,7 +5,6 @@ st.set_page_config(
     page_icon="🎓",
     layout="wide"
 )
-
 client = OpenAI(
     base_url="https://openrouter.ai/api/v1",
     api_key=st.secrets["OPENROUTER_API_KEY"]   
