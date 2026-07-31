@@ -1,23 +1,22 @@
 import streamlit as st
+from openai import OpenAI
+
 st.set_page_config(
     page_title="LearnMate AI",
     page_icon="🎓",
     layout="wide"
 )
+
 with st.sidebar:
     st.title("📚 LearnMate AI")
     st.write("Your Personal AI Tutor")
     st.divider()
     st.info("Choose a topic and your learning style.")
 
-from openai import OpenAI
-
 client = OpenAI(
     base_url="https://openrouter.ai/api/v1",
-    api_key=st.secrets["OPENAI_API_KEY"]
+    api_key=st.secrets[OPENROUTER_API_KEY"]
 )
-
-st.set_page_config(page_title="LearnMate AI", page_icon="🎓")
 
 st.title("🎓 LearnMate AI")
 st.write("Learn the way you understand!")
@@ -33,13 +32,17 @@ if st.button("Explain"):
     if topic:
         prompt = f"Explain '{topic}' in {style} style using simple English."
 
-        response = client.chat.completions.create(
-            model="openai/gpt-oss-20b:free",
-            messages=[
-                {"role": "user", "content": prompt}
-            ]
-        )
+        try:
+            response = client.chat.completions.create(
+                model="openai/gpt-oss-20b:free",
+                messages=[
+                    {"role": "user", "content": prompt}
+                ]
+            )
 
-        st.write(response.choices[0].message.content)
+            st.write(response.choices[0].message.content)
+
+        except Exception as e:
+            st.error(e)
     else:
         st.warning("Please enter a topic.")
